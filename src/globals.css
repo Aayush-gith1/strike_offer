@@ -1,0 +1,990 @@
+@import url('https://fonts.googleapis.com/css2?family=Audiowide&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+.font-audiowide {
+  font-family: 'Audiowide', cursive, sans-serif;
+}
+
+/* Force dark color scheme so native browser UI (select dropdowns, scrollbars, etc.) match the dark theme */
+:root {
+  color-scheme: dark;
+}
+
+/* Prevent layout shift when dialog/modal opens */
+body {
+  overflow-x: hidden;
+}
+
+/* Override Radix UI Dialog body scroll lock - prevent padding and width changes */
+body[data-scroll-locked] {
+  width: 100% !important;
+}
+
+/* Prevent any element from getting padding when dialog is open */
+body[data-scroll-locked] #root,
+body[data-scroll-locked] > div {
+  padding-right: 0 !important;
+  margin-right: 0 !important;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none !important;
+  box-shadow: none !important;
+  
+}
+
+
+/* Custom Skeleton Pulse Animation for dark theme */
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.4;
+  }
+}
+
+.skeleton-pulse {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.upcoming-course-card {
+  box-shadow: 0 22px 55px rgba(245, 158, 11, 0.2);
+}
+
+.upcoming-course-card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: linear-gradient(
+    115deg,
+    transparent 0%,
+    transparent 38%,
+    rgba(250, 204, 21, 0.16) 48%,
+    rgba(255, 255, 255, 0.18) 50%,
+    rgba(245, 158, 11, 0.12) 54%,
+    transparent 66%,
+    transparent 100%
+  );
+  transform: translateX(-120%);
+  animation: upcoming-card-light 4.8s ease-in-out infinite;
+}
+
+.upcoming-course-badge {
+  color: #0b0a12;
+  background: linear-gradient(135deg, #facc15 0%, #f59e0b 48%, #fb923c 100%);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.24) inset,
+    0 10px 26px rgba(245, 158, 11, 0.34),
+    0 0 28px rgba(250, 204, 21, 0.24);
+  overflow: hidden;
+}
+
+.upcoming-course-badge::after {
+  content: "";
+  position: absolute;
+  inset: -40% -55%;
+  background: linear-gradient(
+    105deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.58) 50%,
+    transparent 65%
+  );
+  transform: translateX(-80%) rotate(8deg);
+  animation: upcoming-badge-shine 2.6s ease-in-out infinite;
+}
+
+.upcoming-course-badge > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes upcoming-card-light {
+  0%,
+  42% {
+    transform: translateX(-120%);
+    opacity: 0;
+  }
+  52% {
+    opacity: 1;
+  }
+  72%,
+  100% {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+}
+
+@keyframes upcoming-badge-shine {
+  0%,
+  38% {
+    transform: translateX(-80%) rotate(8deg);
+  }
+  68%,
+  100% {
+    transform: translateX(80%) rotate(8deg);
+  }
+}
+
+/* ===== Tailwind Base ===== */
+@import "tailwindcss";
+@import "tw-animate-css";
+
+/* Tailwind v4 default `dark:` follows system preference (media).
+   Our app theme toggles the `.dark` class on `html`, so map `dark:` to that. */
+@custom-variant dark (&:where(.dark, .dark *));
+
+
+/* ===== Core Theme Variables ===== */
+.light {
+  color-scheme: light;
+  --background: #ffffff;
+  --app-bg: #ffffff;
+  --surface-merged: rgba(2, 6, 23, 0.04);
+  --surface-merged-strong: rgba(2, 6, 23, 0.08);
+  --surface-bg: #ffffff;
+  --surface-card: #ffffff;
+  --card: #ffffff;
+  --card-foreground: #0f172a;
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+  --sidebar: #f8fafc;
+  --sidebar-accent: #f1f5f9;
+  --sidebar-foreground: #0f172a;
+  --sidebar-border: #e2e8f0;
+  --sidebar-accent-foreground: #0f172a;
+  --course-learning-bg:  #0B0A12;
+  --course-learning-sidebar-bg: #0B0A12;
+  --course-learning-header-bg: #0B0A12;
+  --scroll-stack-card-bg: #0B0A12;
+  --scroll-stack-card-text: #ffffff;
+  --chat-bg: #0B0A12;
+  --chat-ai-bg: #232323;
+  --chat-user-bg: #06b6d4;
+  --chat-border: #ffffff;
+  --chat-quick-action: rgba(255, 255, 255, 0.2);
+  --chat-quick-action-text: #ffffff;
+  --brand-primary: #0f172a;
+  --brand-secondary: #111827;
+  --brand-tertiary: #334155;
+  --accent-orange: #ff7b00;
+  --accent-gradient: linear-gradient(135deg, #0f172a 0%, #111827 50%, #334155 100%);
+  --orange-gradient: linear-gradient(135deg, #ff7b00 0%, #f97316 100%);
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-tertiary: #475569;
+  --text-muted: #64748b;
+  --primary: #0f172a;
+  --primary-foreground: #ffffff;
+  --secondary: #f1f5f9;
+  --secondary-foreground: #0f172a;
+  --accent: #f8fafc;
+  --accent-foreground: #0f172a;
+  --highlight: #0f172a;
+  --muted: #f1f5f9;
+  --muted-foreground: #64748b;
+  --border: #e2e8f0;
+  --input: #e2e8f0;
+  --ring: #06b6d4;
+  --navbar-backdrop: rgba(255, 255, 255, 0.85);
+  --navbar-backdrop-blur: rgba(255, 255, 255, 0.75);
+  --dropdown-border: #e2e8f0;
+  --hover-bg: rgba(2, 6, 23, 0.04);
+  --outline-border: #cbd5e1;
+  --feature-blue: #0f172a;
+  --feature-green: #10b981;
+  --feature-purple: #0f172a;
+  --feature-amber: #fbbf24;
+  --feature-red: #f87171;
+  --feature-teal: #0ea5e9;
+  --feature-yellow: #eadb08;
+  --feature-orange: #ff7b00;
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --error: #ef4444;
+  --error-foreground: #ffffff;
+  --info: #0f172a;
+  --info-foreground: #ffffff;
+  --electric-border: #31CC87;
+  --radius: 0.625rem;
+  --shadow-sm: 0 1px 2px rgba(2, 6, 23, 0.06);
+  --shadow-md: 0 10px 22px rgba(2, 6, 23, 0.10);
+  --shadow-lg: 0 18px 42px rgba(2, 6, 23, 0.12);
+  --shadow-xl: 0 30px 80px rgba(2, 6, 23, 0.16);
+  --shadow-brand: 0 8px 32px rgba(2, 6, 23, 0.10);
+  --shadow-orange: 0 8px 32px rgba(255, 123, 0, 0.3);
+  --gradient-primary: linear-gradient(135deg, #0f172a 0%, #111827 100%);
+  --gradient-accent: linear-gradient(135deg, #f8fafc 0%, #eef2ff 100%);
+  --gradient-hero: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-features: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --gradient-card: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --hero-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+  --hero-text: #0f172a;
+  --course-bg: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
+}
+
+/* ===== Premium Dark Mode (Default) ===== */
+:root,
+.dark {
+  color-scheme: dark;
+  --background: #000;
+  --app-bg: #000;
+  --surface-merged: rgba(255, 255, 255, 0.03);
+  --surface-merged-strong: rgba(255, 255, 255, 0.06);
+  --surface-bg:  #1A1A1A;
+  --surface-card: #232323;
+  --card: #232323;
+  --card-foreground: #f1f5f9;
+  --popover: #232323;
+  --popover-foreground: #fafafa;
+  --sidebar:  #0B0A12;
+  --sidebar-accent:  #0B0A12;
+  --sidebar-foreground: #fafafa;
+  --sidebar-border: #404040;
+  --sidebar-accent-foreground: #f1f5f9;
+  --course-learning-bg:  #0B0A12;
+  --course-learning-sidebar-bg: #0B0A12;
+  --course-learning-header-bg: #0B0A12;
+  --scroll-stack-card-bg: #0B0A12;
+  --scroll-stack-card-text: #ffffff;
+  --chat-bg: #0B0A12;
+  --chat-ai-bg: #232323;
+  --chat-user-bg: #06b6d4;
+  --chat-border: #ffffff;
+  --chat-quick-action: rgba(255, 255, 255, 0.2);
+  --chat-quick-action-text: #ffffff;
+  --brand-primary: #ffffff;
+  --brand-secondary: #f8fafc;
+  --brand-tertiary: #e2e8f0;
+  --accent-orange: #ff7b00;
+  --accent-gradient: linear-gradient(135deg, #ffffff 0%, #f8fafc 50%, #e2e8f0 100%);
+  --orange-gradient: linear-gradient(135deg, #ff7b00 0%, #f97316 100%);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #71717a;
+  --text-muted: #52525b;
+  --primary: #ffffff;
+  --primary-foreground: #ffffff;
+  --secondary: #232323;
+  --secondary-foreground: #f1f5f9;
+  --accent: #f8fafc;
+  --accent-foreground: #ffffff;
+  --highlight: #ffffff;
+  --muted: #232323;
+  --muted-foreground: #94a3b8;
+  --border: #232323;
+  --input: #232323;
+  --ring: #06b6d4;
+  --navbar-backdrop: rgba(26, 26, 26, 0.98);
+  --navbar-backdrop-blur: rgba(26, 26, 26, 0.92);
+  --dropdown-border: #ffffff;
+  --hover-bg: #232323;
+  --outline-border: #f8fafc;
+  --feature-blue: #ffffff;
+  --feature-green: #10b981;
+  --feature-purple: #f8fafc;
+  --feature-amber: #fbbf24;
+  --feature-red: #f87171;
+  --feature-teal: #0ea5e9;
+  --feature-yellow: #eadb08;
+  --feature-orange: #ff7b00;
+  --success: #10b981;
+  --success-foreground: #ffffff;
+  --warning: #f59e0b;
+  --warning-foreground: #ffffff;
+  --error: #ef4444;
+  --error-foreground: #ffffff;
+  --info: #ffffff;
+  --info-foreground: #ffffff;
+  --electric-border: #31CC87;
+  --radius: 0.625rem;
+  --shadow-sm: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow-md: inset 0 1px 0 rgba(255, 255, 255, 0.045), 0 10px 22px rgba(0, 0, 0, 0.45);
+  --shadow-lg: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 18px 42px rgba(0, 0, 0, 0.55);
+  --shadow-xl: inset 0 1px 0 rgba(255, 255, 255, 0.055), 0 30px 80px rgba(0, 0, 0, 0.62);
+  --shadow-brand: 0 8px 32px rgba(255, 255, 255, 0.15);
+  --shadow-orange: 0 8px 32px rgba(255, 123, 0, 0.3);
+  --gradient-primary: linear-gradient(135deg, var(--brand-primary), var(--brand-secondary));
+  --gradient-accent: linear-gradient(135deg, var(--brand-secondary), var(--brand-tertiary));
+  --gradient-hero: linear-gradient(135deg, #0B0A12 0%, #232323 100%);
+  --gradient-features: linear-gradient(135deg, #0B0A12 0%, #232323 100%);
+  --gradient-card: linear-gradient(135deg, #232323 0%, #0B0A12 100%);
+  --hero-bg: linear-gradient(135deg, #0B0A12 0%, #232323 100%);
+  --hero-text: #fafafa;
+  --course-bg: linear-gradient(135deg, #0B0A12 0%, #232323 100%);
+}
+
+/* ===== DSA Sheet Theme Overrides ===== */
+:root.theme-dsa-sheet {
+  --background: #000000;
+  --app-bg: #000000;
+  --surface-merged: rgba(255, 255, 255, 0.05);
+  --surface-merged-strong: rgba(255, 255, 255, 0.085);
+  --surface-bg: #111115;
+  --surface-card: #17171c;
+  --card: #17171c;
+  --popover: #17171c;
+  --muted: #17171c;
+  --border: rgba(255, 255, 255, 0.12);
+  --input: rgba(255, 255, 255, 0.12);
+  --hover-bg: rgba(255, 255, 255, 0.08);
+  --navbar-backdrop: rgba(0, 0, 0, 0.98);
+  --navbar-backdrop-blur: rgba(0, 0, 0, 0.92);
+}
+
+:root.theme-dsa-sheet select,
+:root.theme-dsa-sheet select option,
+:root.theme-dsa-sheet select optgroup {
+  background-color: var(--surface-bg);
+  color: #e5e7eb;
+}
+
+/* ===== Enforce Background ===== */
+body, html {
+  background: var(--app-bg) !important;
+  background-attachment: fixed !important;
+  color: var(--text-primary);
+  font-family: 'Gilroy', 'Inter', 'SF Pro Display', -apple-system, BlinkMacSystemFont, ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Native form controls */
+select,
+select option,
+select optgroup {
+  background-color: #ffffff;
+  color: #0f172a;
+}
+
+.dark select,
+.dark select option,
+.dark select optgroup {
+  background-color: #1f1f1f;
+  color: #e5e7eb;
+}
+
+/* Add subtle texture + vignette so cards feel grounded (less "floating") */
+body {
+  position: relative;
+  z-index: 0;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: -1;
+  background:
+    radial-gradient(900px circle at 50% 0%, rgba(2, 6, 23, 0.04), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(2, 6, 23, 0.012) 0px, rgba(2, 6, 23, 0.012) 1px, transparent 1px, transparent 6px);
+  opacity: 0.12;
+}
+
+.dark body::before {
+  background:
+    radial-gradient(900px circle at 50% 0%, rgba(255, 255, 255, 0.06), transparent 55%),
+    radial-gradient(900px circle at 50% 115%, rgba(0, 0, 0, 0.55), transparent 55%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.015) 0px, rgba(255, 255, 255, 0.015) 1px, transparent 1px, transparent 5px);
+  opacity: 0.18;
+}
+
+html {
+  /* Use auto scroll by default to prevent auto-scroll issues */
+  scroll-behavior: auto;
+}
+
+/* Apply smooth scroll only when user initiates navigation */
+html.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+.bg-background, .bg-surface-glass, .bg-course-learning, .bg-scroll-stack-card {
+  background-color: var(--background) !important;
+}
+
+.bg-card, .bg-popover, .bg-course-detail-card {
+  background-color: var(--card) !important;
+}
+
+/* ===== Focus and Selection ===== */
+*:focus-visible {
+  outline: 2px solid var(--brand-primary);
+  outline-offset: 2px;
+  border-radius: 6px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.3);
+}
+::selection {
+  background-color: rgba(6, 182, 212, 0.08);
+  color: var(--brand-primary);
+}
+
+/* ===== Remove Blue Border from Monaco Editor ===== */
+
+/* Remove focus outline and borders */
+.monaco-editor {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+/* ===== Premium Button Styles ===== */
+.btn-primary {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem; font-weight: 600; border-radius: 1rem; border: none;
+  background: var(--accent-gradient); color: white;
+  box-shadow: var(--shadow-brand); transition: all 0.2s;
+}
+.btn-primary:hover { transform: scale(1.03); box-shadow: var(--shadow-xl);}
+.btn-orange { background: var(--orange-gradient); color: white; font-weight: 600; }
+.btn-orange:hover { box-shadow: var(--shadow-orange); }
+
+/* ===== Glass Effects ===== */
+.glass-effect {
+  background: rgba(26,26,26,0.85);
+  backdrop-filter: blur(20px) saturate(1.8);
+  -webkit-backdrop-filter: blur(20px) saturate(1.8);
+  border: 1px solid rgba(255,255,255,0.09);
+  box-shadow: var(--shadow-lg);
+  transition: all 0.3s;
+}
+/* Removed hover effect to prevent white light glow */
+
+/* ===== Typography Utilities ===== */
+.font-sans { font-family: 'Gilroy', var(--font-sans); font-weight:700; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+.font-heading { font-family: 'Gilroy', 'Poppins', sans-serif; font-weight:700; }
+.font-display { font-family: 'Gilroy','Poppins',sans-serif; font-weight:700; }
+.font-accent { font-family: 'Gilroy', monospace; font-weight:700; }
+.font-elegant { font-family: 'Gilroy', 'Cal Sans',sans-serif; font-weight:700; }
+.font-audiowide { font-family: 'Audiowide', cursive !important; font-weight:400 !important; }
+
+/* ===== Gradient Text Utilities ===== */
+.text-gradient-brand {
+  background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 50%, #e2e8f0 100%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 3s infinite;
+}
+.text-gradient-orange {
+  background: var(--orange-gradient);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-size: 200% 200%;
+  animation: shimmer 3s infinite;
+}
+
+/* ===== Gradients and Brand Colors ===== */
+.bg-gradient-brand { background: linear-gradient(135deg, #ffffff 0%, #ffffff 100%) !important; }
+.bg-gradient-orange { background: var(--orange-gradient); }
+.text-brand-primary { color: var(--brand-primary); }
+.text-brand-secondary { color: var(--brand-secondary); }
+.text-brand-tertiary { color: var(--brand-tertiary); }
+.text-accent-orange { color: var(--accent-orange); }
+
+/* ===== Shadow Utilities ===== */
+.shadow-sm { box-shadow: var(--shadow-sm); }
+.shadow-md { box-shadow: var(--shadow-md);}
+.shadow-lg { box-shadow: var(--shadow-lg);}
+.shadow-xl { box-shadow: var(--shadow-xl);}
+
+/* ===== Enhanced Scrollbar Styling ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--background);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.6), rgba(248, 250, 252, 0.8));
+  border-radius: 3px;
+  transition: background 0.3s;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.8), rgba(226, 232, 240, 0.9));
+}
+::-webkit-scrollbar-corner {
+  background: var(--background);
+}
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.6) var(--background);
+}
+
+/* Removed duplicate smooth scrolling - already set above with auto default */
+
+/* ===== Allow Main Page Scrolling ===== */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  min-height: 100vh;
+  max-width: 100vw;
+}
+
+#root {
+  height: auto;
+  min-height: 100vh;
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+/* ===== Problem Detail Page Specific ===== */
+.problem-detail-container {
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ===== Hide Scrollbars for Main Containers ===== */
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* ===== Thin Scrollbar for Left Panel ===== */
+.left-panel-scroll::-webkit-scrollbar {
+  width: 3px;
+}
+
+.left-panel-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.left-panel-scroll::-webkit-scrollbar-thumb {
+  background: rgba(156, 163, 175, 0.2);
+  border-radius: 2px;
+}
+
+.left-panel-scroll::-webkit-scrollbar-thumb:hover {
+  background: rgba(156, 163, 175, 0.4);
+}
+
+/* ===== Fancy Animations ===== */
+@keyframes shimmer {
+  0% { background-position: -200px 0; }
+  100% { background-position: calc(200px + 100%) 0; }
+}
+
+/* ===== View Transition Animations ===== */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+/* ===== Utility Classes For Layout ===== */
+.radius { border-radius: var(--radius);}
+.transition { transition: all 0.3s cubic-bezier(0.4,0,0.2,1);}
+.bg-hero { background: var(--hero-bg);}
+.bg-course { background: var(--course-bg);}
+ 
+
+
+/* ===== End of Premium Black Theme CSS ===== */
+
+/* Make sure Audiowide font takes precedence */
+.font-audiowide, .font-audiowide * {
+  font-family: 'Audiowide', cursive !important;
+  font-weight: 400 !important;
+}
+
+/* ===== Company Logo Styles ===== */
+/* Smooth logo transitions for hover effects */
+.company-logo {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform, opacity, filter;
+}
+
+.company-logo:hover {
+  transform: scale(1.1);
+}
+
+/* Logo scroll container with fade effect */
+.logo-scroll-container {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent 0%,
+    black 10%,
+    black 90%,
+    transparent 100%
+  );
+}
+
+/* Invert certain logos for dark background */
+.logo-loop img[alt="Apple"],
+.logo-loop img[alt="Microsoft"],
+.logo-loop img[alt="Oracle"] {
+  filter: invert(1) brightness(1.2);
+}
+
+/* Ensure logos maintain aspect ratio */
+.logo-loop img {
+  object-fit: contain;
+  max-height: 100%;
+  width: auto;
+}
+
+/* ===== Platform Interactive Onboarding Tour Styles ===== */
+
+/* Override driver.js default styles */
+.strike-onboarding-popover {
+  background: linear-gradient(135deg, #18181b 0%, #09090b 100%) !important;
+  border: 1px solid rgba(161, 161, 170, 0.3) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7) !important;
+  max-width: 500px !important;
+}
+
+.strike-onboarding-popover .driver-popover-title {
+  color: #fafafa !important;
+  font-size: 1.25rem !important;
+  font-weight: 700 !important;
+  margin-bottom: 12px !important;
+}
+
+.strike-onboarding-popover .driver-popover-description {
+  color: #d4d4d8 !important;
+  font-size: 0.95rem !important;
+  line-height: 1.6 !important;
+}
+
+.strike-onboarding-popover .driver-popover-footer {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+  margin-top: 20px !important;
+  padding-top: 16px !important;
+  border-top: 1px solid rgba(161, 161, 170, 0.2) !important;
+}
+
+.strike-onboarding-popover .driver-popover-progress-text {
+  color: #a1a1aa !important;
+  font-size: 0.875rem !important;
+  font-weight: 500 !important;
+}
+
+/* Next Button - White gradient */
+.strike-onboarding-popover .driver-popover-next-btn {
+  background: linear-gradient(135deg, #ffffff 0%, #e4e4e7 100%) !important;
+  color: #09090b !important;
+  border: none !important;
+  padding: 8px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.9rem !important;
+}
+
+.strike-onboarding-popover .driver-popover-next-btn:hover {
+  background: linear-gradient(135deg, #e4e4e7 0%, #d4d4d8 100%) !important;
+  transform: translateY(-1px) !important;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.3) !important;
+}
+
+/* Skip Button (Previous) - Zinc subtle */
+.strike-onboarding-popover .driver-popover-prev-btn {
+  background: rgba(161, 161, 170, 0.15) !important;
+  color: #a1a1aa !important;
+  border: 1px solid rgba(161, 161, 170, 0.3) !important;
+  padding: 8px 20px !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+  font-size: 0.9rem !important;
+}
+
+.strike-onboarding-popover .driver-popover-prev-btn:hover {
+  background: rgba(161, 161, 170, 0.25) !important;
+  color: #d4d4d8 !important;
+  border-color: rgba(161, 161, 170, 0.4) !important;
+}
+
+/* Hide Close Button */
+.strike-onboarding-popover .driver-popover-close-btn {
+  display: none !important;
+}
+
+/* Content styling */
+.onboarding-welcome,
+.onboarding-step {
+  color: #e2e8f0;
+}
+
+.onboarding-welcome p,
+.onboarding-step p {
+  margin-bottom: 0.5rem;
+}
+
+.onboarding-step ul,
+.onboarding-step ol {
+  color: #cbd5e1;
+}
+
+.onboarding-step li {
+  margin: 0.5rem 0;
+}
+
+.onboarding-step strong {
+  color: #f1f5f9;
+  font-weight: 600;
+}
+
+
+/* Responsive adjustments */
+@media (max-width: 1024px) {
+  .strike-onboarding-popover {
+    max-width: 85vw !important;
+    margin: 0 auto !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    position: fixed !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .strike-onboarding-popover {
+    max-width: 90vw !important;
+    margin: 0 auto !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: fixed !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-title {
+    font-size: 1.1rem !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-description {
+    font-size: 0.875rem !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .strike-onboarding-popover {
+    max-width: 95vw !important;
+    margin: 0 8px !important;
+    left: 50% !important;
+    top: 50% !important;
+    transform: translate(-50%, -50%) !important;
+    position: fixed !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-title {
+    font-size: 1rem !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-description {
+    font-size: 0.8rem !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-footer {
+    flex-direction: column !important;
+    gap: 12px !important;
+  }
+
+  .strike-onboarding-popover .driver-popover-next-btn,
+  .strike-onboarding-popover .driver-popover-prev-btn {
+    width: 100% !important;
+    justify-content: center !important;
+  }
+}
+
+/* Animation for entrance */
+.driver-popover {
+  animation: slideIn 0.3s ease-out !important;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+/* ===== Navbar Dynamic Positioning ===== */
+.navbar-wrapper header {
+  top: var(--navbar-top, 0px) !important;
+  transition: top 0.2s ease-out;
+}
+
+/* ===== Article Highlights ===== */
+mark.strike-highlight {
+  background: rgba(250, 204, 21, 0.32);
+  padding: 1px 4px;
+  border-radius: 4px;
+  box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.25);
+  color: inherit;
+}
+
+mark.strike-highlight:hover {
+  background: rgba(250, 204, 21, 0.42);
+  box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.35), 0 0 0 4px rgba(250, 204, 21, 0.08);
+}
+
+mark.strike-highlight[data-note="true"] {
+  background: rgba(250, 204, 21, 0.26);
+  box-shadow: inset 0 0 0 1px rgba(250, 204, 21, 0.25);
+  border-bottom: 1px dashed rgba(250, 204, 21, 0.6);
+}
+
+/* ===== System Design Premium Node Entrance Animation ===== */
+@keyframes sd-node-enter {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, calc(-50% + 12px)) scale(0.95);
+    filter: blur(1px);
+  }
+  60% {
+    opacity: 0.8;
+    transform: translate(-50%, calc(-50% + 2px)) scale(1.01);
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+    filter: blur(0);
+  }
+}
+
+/* Enhanced hover states for premium nodes */
+@keyframes node-glow-pulse {
+  0%, 100% {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+  }
+  50% {
+    box-shadow: 0 12px 40px rgba(0,0,0,0.45), 0 0 30px rgba(79,140,255,0.15);
+  }
+}
+
+/* Premium health indicator pulse animation */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.1);
+  }
+}
+
+/* Premium shine animation for hover effects */
+@keyframes slide-shine {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+/* Premium port reveal animation */
+.group:hover .sd-port {
+  opacity: 1 !important;
+}
+
+/* ── Brahmastra Celestial Energy Vibration ── */
+@keyframes brahmastra-vibrate {
+  0% { transform: scaleX(-1) translate(0px, 0px); }
+  20% { transform: scaleX(-1) translate(-1.5px, 0.8px); }
+  40% { transform: scaleX(-1) translate(1.2px, -1px); }
+  60% { transform: scaleX(-1) translate(-1px, -0.6px); }
+  80% { transform: scaleX(-1) translate(1.4px, 0.7px); }
+  100% { transform: scaleX(-1) translate(0px, 0px); }
+}
+
+@keyframes brahmastra-vibrate-intense {
+  0% { transform: scaleX(-1) translate(0px, 0px); }
+  20% { transform: scaleX(-1) translate(-2.5px, 1.2px); }
+  40% { transform: scaleX(-1) translate(2px, -1.5px); }
+  60% { transform: scaleX(-1) translate(-1.8px, -1px); }
+  80% { transform: scaleX(-1) translate(2.2px, 1px); }
+  100% { transform: scaleX(-1) translate(0px, 0px); }
+}
+
+.animate-brahmastra-vibrate {
+  animation: brahmastra-vibrate 0.1s linear infinite;
+}
+
+.group:hover .animate-brahmastra-vibrate {
+  animation: brahmastra-vibrate-intense 0.06s linear infinite;
+}
+
+/* ── Testimonials Infinite Marquee (Right to Left) ── */
+@keyframes testimonial-marquee-left {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.animate-testimonial-left {
+  display: flex;
+  width: max-content;
+  animation: testimonial-marquee-left 42s linear infinite;
+  will-change: transform;
+}
+
+.animate-testimonial-left-slow {
+  display: flex;
+  width: max-content;
+  animation: testimonial-marquee-left 52s linear infinite;
+  will-change: transform;
+}
+

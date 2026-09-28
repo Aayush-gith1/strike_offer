@@ -1,0 +1,27 @@
+// Centralized react-router-dom exports
+export {
+  Link,
+  NavLink,
+  Navigate,
+  Outlet,
+  useNavigate,
+  useLocation,
+  useParams,
+  useSearchParams,
+  createSearchParams,
+  generatePath,
+  matchPath,
+  resolvePath,
+  createBrowserRouter,
+  createHashRouter,
+  createMemoryRouter,
+  RouterProvider,
+  BrowserRouter,
+  HashRouter,
+  MemoryRouter,
+  Routes,
+  Route,
+  createRoutesFromElements,
+  ScrollRestoration,
+} from "react-router-dom";
+

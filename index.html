@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/png" sizes="16x16" href="https://dolia18uq98lp.cloudfront.net/course/531a395f-8950-49e0-906a-49273b3ea867.png" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- Preconnect to Google Fonts for faster font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Audiowide&family=Cinzel+Decorative:wght@400;700;900&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet" />
+
+    <!-- Preload critical hero background asset -->
+    <link rel="preload" href="/newbg.png" as="image" fetchpriority="high" />
+
+    <style>
+      body {
+        margin: 0;
+        font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        background: #000;
+        color: #fff;
+        overflow-x: hidden;
+      }
+      #root {
+        min-height: 100vh;
+      }
+      * {
+        box-sizing: border-box;
+      }
+    </style>
+
+    <meta
+      name="description"
+      content="Master data structures, algorithms, web development, system design, and generative AI with courses and guided practice by Rohit Negi on Strike."
+    />
+    <title>Strike | Coding Courses by Rohit Negi</title>
+  </head>
+  <body class="bg-black text-white antialiased selection:bg-zinc-800 selection:text-white">
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
